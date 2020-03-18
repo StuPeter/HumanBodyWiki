@@ -14,9 +14,9 @@ import json
 
 def parserBody():
     """解析页面数据"""
-    bodyData = {"name": "e-human-adult-male-body"}
+    bodyData = {"name": "e-human-adult-female-body"}
     bodyData["groups"] = []
-    with open("../templates/MaleBodyApp/index.html", "r", encoding="utf-8") as f:
+    with open("../templates/MaleBodyApp/female.html", "r", encoding="utf-8") as f:
         html = f.read()
     soup = BeautifulSoup(html, "html.parser")
     svg = soup.find('svg')
