@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="/static/MaleBodyApp/zoom.js"></script>
+    <script type="text/javascript" src="/static/MaleBodyApp/drag.js"></script>
+    <script type="text/javascript" src="/static/MaleBodyApp/index.js"></script>
+</head>
+<body style="height: 100%;margin: 0;overflow: hidden;">
+<div id="dragDiv"
+     style="height: 100%; width: 100%; overflow: visible; position: absolute; transition: all 0.1s ease 0s; user-select: none; cursor: default; left: -0px; top: -0px;">
+    <svg id="zoomSvg" height="6315" version="1.1" width="2340" xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         style="overflow: hidden; position: relative; transform: translate(0px) scale(1) rotate(0deg);" class=""
+         prefix="uberon: http://purl.obolibrary.org/obo/ ro: http://www.obofoundry.org/ro/ro.owl# obo: http://purl.obolibrary.org/obo/ ma: http://purl.org/obo/owl/MA# go: http://purl.org/obo/owl/GO# fma: http://purl.org/obo/owl/FMA# efo: http://www.ebi.ac.uk/efo/ cl: http://purl.org/obo/owl/CL# celda: http://ontology.cellfinder.org/CELDA.owl#"
+         about="fma:FMA_67811" viewBox="-11.903800475059382 0 117 380" preserveAspectRatio="xMinYMin"><title>Human Adult
+        Male Body</title>
+        {% for group in groups %}
+        <g property="ro:has_part" resource="{{ group.resource }}" data-group="{{ group.datagroup }}" >
+            {% for element in group.elements %}
+            {% if element.type == "path" %}
+            <path id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                  data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                  d="{{element.d}}">
+            </path>
+            {% elif element.type == "circle" %}
+            <circle id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                    data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                    cx="{{element.cx}}" cy="{{element.cy}}" r="{{element.r}}"></circle>
+            {% elif element.type == "ellipse" %}
+            <ellipse id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                     data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                     cx="{{element.cx}}" cy="{{element.cy}}" rx="{{element.rx}}" ry="{{element.ry}}"></ellipse>
+            {% endif %}
+            {% endfor %}
+        </g>
+        {% endfor %}
+
+    </svg>
+</div>
+
+<script>
+        window.onload = function () {
+            $solway.zoom({
+                ele: document.getElementById('zoomSvg'), // 缩放的 节点
+                scale: 0.11,  // 默认缩放倍数   默认 1
+                minScale: 0.1, // 最小倍数   默认0.1
+                rate: 0.1,  // 缩放速率   默认  ±0.1  (传正数)
+
+                // 偏移量， [x偏移量，  y偏移量]
+                translate: [($('#dragDiv').width() - $('#zoomSvg').width()) / 2, ($('#dragDiv').height() - $('#zoomSvg').height()) / 2]
+            });
+
+
+            $solway.drag({
+                ele: document.getElementById('dragDiv')
+            });
+        };
+    </script>
+</body>
+</html>

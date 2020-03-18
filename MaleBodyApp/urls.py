@@ -15,7 +15,8 @@ from . import views
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
-    # path('api/v1/get/', views.split_home_get_api),
+    path('test', TemplateView.as_view(template_name='test.html')),
+    path('getdata/', views.getData2),
     # path('api/v1/post/', views.split_home_post_api),
 ]
 
