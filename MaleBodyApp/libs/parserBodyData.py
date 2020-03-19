@@ -14,7 +14,7 @@ import json
 
 def parserBody():
     """解析页面数据"""
-    bodyData = {"name": "e-human-adult-female-body"}
+    bodyData = {"name": "e-human-adult-male-body"}
     bodyData["groups"] = []
     with open("../templates/MaleBodyApp/female.html", "r", encoding="utf-8") as f:
         html = f.read()
@@ -34,6 +34,7 @@ def parserBody():
         ele["fill"] = path["fill"]
         ele["style"] = path["style"]
         ele["stroke"] = path["stroke"]
+        group["resource"] = "useless"
         try:
             ele["datagroup"] = path["data-group"]
         except:

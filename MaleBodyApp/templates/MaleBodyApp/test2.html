@@ -14,8 +14,6 @@
         g:active path{
 	        fill:#fe9b71;
         }
-
-
     </style>
 </head>
 <body style="height: 100%;margin: 0;overflow: hidden;">
@@ -27,6 +25,26 @@
          about="fma:FMA_67811" viewBox="-11.903800475059382 0 117 380" preserveAspectRatio="xMinYMin"><title>Human Adult
         Male Body</title>
         {% for group in groups %}
+
+        {% if group.resource == "useless" %}
+            {% for element in group.elements %}
+            {% if element.type == "path" %}
+            <path id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                  data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                  d="{{element.d}}">
+            </path>
+            {% elif element.type == "circle" %}
+            <circle id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                    data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                    cx="{{element.cx}}" cy="{{element.cy}}" r="{{element.r}}"></circle>
+            {% elif element.type == "ellipse" %}
+            <ellipse id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                     data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                     cx="{{element.cx}}" cy="{{element.cy}}" rx="{{element.rx}}" ry="{{element.ry}}"></ellipse>
+            {% endif %}
+            {% endfor %}
+        {% else %}
+
         <g property="ro:has_part" resource="{{ group.resource }}" data-group="{{ group.datagroup }}">
             {% for element in group.elements %}
             {% if element.type == "path" %}
@@ -45,6 +63,7 @@
             {% endif %}
             {% endfor %}
         </g>
+         {% endif %}
         {% endfor %}
 
     </svg>
