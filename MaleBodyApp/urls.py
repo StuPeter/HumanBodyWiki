@@ -16,6 +16,7 @@ from . import views
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('test', TemplateView.as_view(template_name='test.html')),
+    path('getdata1/', views.getData2_1),
     path('getdata/', views.getData2),
     # path('api/v1/post/', views.split_home_post_api),
 ]

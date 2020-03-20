@@ -7,16 +7,118 @@
     <script type="text/javascript" src="/static/MaleBodyApp/zoom.js"></script>
     <script type="text/javascript" src="/static/MaleBodyApp/drag.js"></script>
     <script type="text/javascript" src="/static/MaleBodyApp/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/MaleBodyApp/assets/sbb-1.6.2-pre.css"/>
+
     <style>
+        svg{
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-user-modify: read-write-plaintext-only;
+            box-shadow: none;
+        }
         g:hover path{
 	        fill:#f6e1b6;
         }
         g:active path{
 	        fill:#fe9b71;
         }
+
+
+
     </style>
 </head>
 <body style="height: 100%;margin: 0;overflow: hidden;">
+<!--标题栏-->
+<header id="topbar" class="ng-scope">
+    <nav id="nav">
+        <ul>
+            <li>
+                <a href="." alt="Home" class="icon icon-home noText enabled">Home</a>
+            </li>
+            <li class="drop ng-isolate-scope closed" sbb-bookmarks="" set-location="setLocation(url)"
+                name="human adult male body">
+                <div alt="Bookmarks" class="icon icon-book noText enabled" ng-class="{'enabled': enabled }"
+                     ng-click="toggle()">
+                </div>
+                <div class="container">
+                    <div class="subContainer">
+                        <div class="triangle"></div>
+                        <div class="content">
+                            <button ng-click="addBookmark()" ng-class="{ 'disabled': disabled }" ng-disabled="disabled"
+                                    ng-hide="displayOnly" class="ng-binding">Add Bookmark
+                            </button>
+                            <div class="separator ng-hide" ng-show="bookmarks.length &amp;&amp; !displayOnly"></div>
+                            <ul>
+                                <!-- ngRepeat: bookmark in bookmarks track by $index -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="drop ng-isolate-scope" ng-class="{ 'opened': active }">
+                <div class="icon icon-question noText enabled" alt="Help" ng-click="toggle()">
+                </div>
+            </li>
+            <li class="fRight drop center" sbb-gender="">
+                  <span class="icon icon-neutral noText ng-hide" ng-hide="genderEnabled">
+                  </span>
+                <a class="icon icon-male noText enabled" ng-click="changeGender()" ng-show="genderEnabled">
+                </a>
+            </li>
+        </ul>
+        <!-- ngInclude:  -->
+        <!-- ngInclude:  -->
+    </nav>
+    <form id="search" class="ng-pristine ng-valid">
+        <div class="wrapper">
+            <input name="search" id="f_search" type="text" ng-model="searchInput"
+                   class="ng-pristine ng-untouched ng-valid">
+            <label for="f_search" class="icon-magnifier icon-only"></label>
+            <div class="close icon-cross-circle ng-hide" ng-show="searchInput.length" ng-click="searchInput = ''">
+                Close
+            </div>
+            <!-- ngInclude:  -->
+        </div>
+    </form>
+
+    <h1 class="right ng-binding">
+        Male Body Wiki
+    </h1>
+    <!-- ngInclude:  -->
+</header>
+<!--侧边栏-->
+<div id="sidebar" sbb-accordion="" class="ng-scope">
+    <section class="entities open" panel="entities">
+        <!-- ngInclude:  -->
+        <h3 class="toggler" ng-click="toggle('entities')">Entities</h3>
+        <ul class="controls">
+            <li title="Maximise" class="hidden icon-plus-circle" ng-click="maximise('entities')">Max</li>
+        </ul>
+        <div class="content" style="height: 1163px;">
+            <div class="wrapper" id="entities" sbb-entities="" ng-class="{ 'heatmap' : expression }">
+                <ol class="alphabet itemList">
+                    {% for bodyPart in bodyParts %}
+                    <!-- ngRepeat: unit in letter -->
+                    <li ng-repeat="unit in letter" class="ng-scope">
+                        <div class="wrapper">
+                                    <span class="hmIcon ng-binding" ng-style="relColor(expression.sum[unit.name])">
+                                        <span ng-show="selectedGene > -1" class="ng-binding ng-hide"> / </span>
+                                    </span>
+                            <a ng-href="human-adult-male-body?entity={{ bodyPart }}" class="unit ng-binding"
+                               ng-class="{'zoomable': unit.zoom,
+                                                   'active': unit.name == activeUnit,
+                                                   'highlight': unit.name == hoverUnit}"
+                               ng-dblclick="setView(unit.name)" data-prefix="" data-expr="" id="unit_appendix"
+                               href="?entity={{ bodyPart }}">{{ bodyPart }}
+                            </a>
+                            <!-- ngIf: expUnits -->
+                        </div>
+                    </li><!-- end ngRepeat: unit in letter -->
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </section>
+</div>
 <div id="dragDiv"
      style="height: 100%; width: 100%; overflow: visible; position: absolute; transition: all 0.1s ease 0s; user-select: none; cursor: default; left: -0px; top: -0px;">
     <svg id="zoomSvg" height="6315" version="1.1" width="2340" xmlns="http://www.w3.org/2000/svg"
@@ -27,22 +129,22 @@
         {% for group in groups %}
 
         {% if group.resource == "useless" %}
-            {% for element in group.elements %}
-            {% if element.type == "path" %}
-            <path id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
-                  data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
-                  d="{{element.d}}">
-            </path>
-            {% elif element.type == "circle" %}
-            <circle id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
-                    data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
-                    cx="{{element.cx}}" cy="{{element.cy}}" r="{{element.r}}"></circle>
-            {% elif element.type == "ellipse" %}
-            <ellipse id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
-                     data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
-                     cx="{{element.cx}}" cy="{{element.cy}}" rx="{{element.rx}}" ry="{{element.ry}}"></ellipse>
-            {% endif %}
-            {% endfor %}
+        {% for element in group.elements %}
+        {% if element.type == "path" %}
+        <path id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+              data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+              d="{{element.d}}">
+        </path>
+        {% elif element.type == "circle" %}
+        <circle id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                cx="{{element.cx}}" cy="{{element.cy}}" r="{{element.r}}"></circle>
+        {% elif element.type == "ellipse" %}
+        <ellipse id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                 data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                 cx="{{element.cx}}" cy="{{element.cy}}" rx="{{element.rx}}" ry="{{element.ry}}"></ellipse>
+        {% endif %}
+        {% endfor %}
         {% else %}
 
         <g property="ro:has_part" resource="{{ group.resource }}" data-group="{{ group.datagroup }}">
@@ -63,9 +165,8 @@
             {% endif %}
             {% endfor %}
         </g>
-         {% endif %}
+        {% endif %}
         {% endfor %}
-
     </svg>
 </div>
 
@@ -86,6 +187,7 @@
                 ele: document.getElementById('dragDiv')
             });
         };
+
 
 </script>
 </body>
