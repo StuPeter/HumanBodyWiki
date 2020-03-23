@@ -8,7 +8,15 @@
     <script type="text/javascript" src="/static/MaleBodyApp/drag.js"></script>
     <script type="text/javascript" src="/static/MaleBodyApp/index.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/MaleBodyApp/assets/sbb-1.6.2-pre.css"/>
+    <script type="text/javascript" src="/static/MaleBodyApp/jquery-latest.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#nav1 li").click(function () {
+                $("#nav1 li").eq($(this).index()).addClass("navdown").siblings().removeClass("navdown");
+            })
+        })
 
+    </script>
     <style>
         svg{
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -21,8 +29,27 @@
         g:active path{
 	        fill:#fe9b71;
         }
-
-
+        a {
+            text-decoration:none;
+            color: -webkit-link;
+        }
+        a:hover {
+            padding: 4px 6px 5px;
+            color: #000;
+            text-shadow: 0 1px 0 rgba(255,255,255,.2);
+            border-color: #e5855c;
+            background-color: #fff;
+        }
+        .navdown a {
+            color: #fff;
+            padding: 4px 6px 5px;
+            text-shadow: 0 -1px 0 rgba(0,0,0,.1);
+            border: none;
+            border: 1px solid #F00;
+            background-color: #ff8a59;
+            background-image: linear-gradient(#ff8a59,#f27b49);
+            text-decoration:none;
+        }
 
     </style>
 </head>
@@ -87,37 +114,26 @@
 </header>
 <!--侧边栏-->
 <div id="sidebar" sbb-accordion="" class="ng-scope">
-    <section class="entities open" panel="entities">
-        <!-- ngInclude:  -->
+    <section class="entities open">
         <h3 class="toggler" ng-click="toggle('entities')">Entities</h3>
         <ul class="controls">
             <li title="Maximise" class="hidden icon-plus-circle" ng-click="maximise('entities')">Max</li>
         </ul>
         <div class="content" style="height: 1163px;">
-            <div class="wrapper" id="entities" sbb-entities="" ng-class="{ 'heatmap' : expression }">
-                <ol class="alphabet itemList">
-                    {% for bodyPart in bodyParts %}
-                    <!-- ngRepeat: unit in letter -->
-                    <li ng-repeat="unit in letter" class="ng-scope">
-                        <div class="wrapper">
-                                    <span class="hmIcon ng-binding" ng-style="relColor(expression.sum[unit.name])">
-                                        <span ng-show="selectedGene > -1" class="ng-binding ng-hide"> / </span>
-                                    </span>
-                            <a ng-href="human-adult-male-body?entity={{ bodyPart }}" class="unit ng-binding"
-                               ng-class="{'zoomable': unit.zoom,
-                                                   'active': unit.name == activeUnit,
-                                                   'highlight': unit.name == hoverUnit}"
-                               ng-dblclick="setView(unit.name)" data-prefix="" data-expr="" id="unit_appendix"
-                               href="?entity={{ bodyPart }}">{{ bodyPart }}
-                            </a>
-                            <!-- ngIf: expUnits -->
-                        </div>
-                    </li><!-- end ngRepeat: unit in letter -->
-                    {% endfor %}
-                </ol>
+            <div id="nav1">
+                <div class="wrapper" id="">
+                    <ul class="">
+                        {% for bodyPart in bodyParts %}
+                        <li>
+                            <a class="unit ng-binding" href="#">{{ bodyPart }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
+
 </div>
 <div id="dragDiv"
      style="height: 100%; width: 100%; overflow: visible; position: absolute; transition: all 0.1s ease 0s; user-select: none; cursor: default; left: -0px; top: -0px;">
@@ -187,6 +203,14 @@
                 ele: document.getElementById('dragDiv')
             });
         };
+
+
+
+
+
+
+
+
 
 
 </script>
