@@ -123,9 +123,9 @@
             <div id="nav1">
                 <div class="wrapper" id="">
                     <ul class="">
-                        {% for bodyPart in bodyParts %}
+                        {% for bodyen, bodycn in bodyParts.items %}
                         <li>
-                            <a class="unit ng-binding" href="#">{{ bodyPart }}</a>
+                            <a id="{{ bodyen }}" class="unit ng-binding" href="#">{{ bodycn }}</a>
                         </li>
                         {% endfor %}
                     </ul>
@@ -207,7 +207,6 @@
 </script>
 <script>
    var g = document.querySelectorAll('g')
-   console.log(g)
     g.forEach(function(el){
         el.addEventListener('click',function(){
             this.classList.add('active')
@@ -219,5 +218,6 @@
         })
     })
 </script>
+
 </body>
 </html>

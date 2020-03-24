@@ -23,36 +23,31 @@ def getData(request):
 
 def getData2(request):
     """解析json"""
-    with open("MaleBodyApp/static/MaleBodyApp/assets/illustrations/e-human-adult-female-body.json") as f:
+    with open("MaleBodyApp/static/MaleBodyApp/assets/illustrations/e-human-adult-male-body_cn.json") as f:
         jData = json.load(f)
-    bodyParts = []
+    bodyPartsDict = {}
     for g in jData["groups"]:
         for el in g["elements"]:
             try:
-                bodyParts.append(el["datagroup"])
-            except:
-                pass
-    bodyParts.remove("")
-    bodyParts = list(set(bodyParts))
-    bodyParts.remove("")
-    jData["bodyParts"] = bodyParts
+                bodyPartsDict[el["datagroup"]] = (el["datagroup_cn"])
+            except Exception as e:
+                print(e)
+    jData["bodyParts"] = bodyPartsDict
     return render(request, 'MaleBodyApp/test2.html', jData)
     # return JsonResponse(jData)
 
 
 def getData2_1(request):
     """解析json"""
-    with open("MaleBodyApp/static/MaleBodyApp/assets/illustrations/e-human-adult-female-body.json") as f:
+    with open("MaleBodyApp/static/MaleBodyApp/assets/illustrations/e-human-adult-female-body_cn.json") as f:
         jData = json.load(f)
-    bodyParts = []
+    bodyPartsDict = {}
     for g in jData["groups"]:
         for el in g["elements"]:
             try:
-                bodyParts.append(el["datagroup"])
-            except:
-                pass
-    bodyParts = list(set(bodyParts))
-    bodyParts.remove("")
-    jData["bodyParts"] = bodyParts
+                bodyPartsDict[el["datagroup"]] = (el["datagroup_cn"])
+            except Exception as e:
+                print(e)
+    jData["bodyParts"] = bodyPartsDict
     # return render(request, 'MaleBodyApp/test2.html', jData)
     return JsonResponse(jData)
