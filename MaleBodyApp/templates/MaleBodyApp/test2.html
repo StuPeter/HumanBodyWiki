@@ -26,7 +26,7 @@
         g:hover path{
 	        fill:#f6e1b6;
         }
-        g:active path{
+        g.active path{
 	        fill:#fe9b71;
         }
         a {
@@ -204,15 +204,20 @@
             });
         };
 
-
-
-
-
-
-
-
-
-
+</script>
+<script>
+   var g = document.querySelectorAll('g')
+   console.log(g)
+    g.forEach(function(el){
+        el.addEventListener('click',function(){
+            this.classList.add('active')
+            g.forEach(function(elm){
+                if(elm != el){
+                elm.classList.remove('active')
+                }
+            })
+        })
+    })
 </script>
 </body>
 </html>
