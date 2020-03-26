@@ -2,21 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>人体图解</title>
 
     <script type="text/javascript" src="/static/MaleBodyApp/zoom.js"></script>
     <script type="text/javascript" src="/static/MaleBodyApp/drag.js"></script>
     <script type="text/javascript" src="/static/MaleBodyApp/index.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/MaleBodyApp/assets/sbb-1.6.2-pre.css"/>
     <script type="text/javascript" src="/static/MaleBodyApp/jquery-latest.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $("#nav1 li").click(function () {
-                $("#nav1 li").eq($(this).index()).addClass("navdown").siblings().removeClass("navdown");
-            })
-        })
-
-    </script>
     <style>
         svg{
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -40,16 +32,20 @@
             border-color: #e5855c;
             background-color: #fff;
         }
-        .navdown a {
-            color: #fff;
+         .navdown {
+            color: #fff !important;
             padding: 4px 6px 5px;
             text-shadow: 0 -1px 0 rgba(0,0,0,.1);
             border: none;
             border: 1px solid #F00;
-            background-color: #ff8a59;
+            background-color: #ff8a59 !important;
             background-image: linear-gradient(#ff8a59,#f27b49);
             text-decoration:none;
         }
+
+
+
+
 
     </style>
 </head>
@@ -108,7 +104,7 @@
     </form>
 
     <h1 class="right ng-binding">
-        Male Body Wiki
+        人体图解
     </h1>
     <!-- ngInclude:  -->
 </header>
@@ -125,7 +121,7 @@
                     <ul class="">
                         {% for bodyen, bodycn in bodyParts.items %}
                         <li>
-                            <a id="{{ bodyen }}" class="unit ng-binding" href="#">{{ bodycn }}</a>
+                            <a name="{{ bodyen }}" class="unit ng-binding" href="#">{{ bodycn }}</a>
                         </li>
                         {% endfor %}
                     </ul>
@@ -163,7 +159,8 @@
         {% endfor %}
         {% else %}
 
-        <g property="ro:has_part" resource="{{ group.resource }}" data-group="{{ group.datagroup }}">
+        <g name="{{group.gid}}" property="ro:has_part" resource="{{ group.resource }}"
+           data-group="{{ group.datagroup }}">
             {% for element in group.elements %}
             {% if element.type == "path" %}
             <path id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
@@ -204,12 +201,35 @@
             });
         };
 
+
+
+
+</script>
+<script type="text/javascript">
+        $(function () {
+            $("#nav1 a").click(function () {
+                $("#nav1 a").eq($(this).index()).addClass("navdown").siblings().removeClass("navdown");
+            })
+        })
+
+
 </script>
 <script>
-   var g = document.querySelectorAll('g')
+//SVG g标签关联a标签
+var g = document.querySelectorAll('g')
     g.forEach(function(el){
         el.addEventListener('click',function(){
             this.classList.add('active')
+            var n = this.getAttribute("name")
+            console.log(n)
+            var a = document.getElementsByName(n)[0]
+            a.classList.add('navdown')
+            var alla = document.querySelectorAll('a')
+            alla.forEach(function(al){
+                if (al != a){
+                al.classList.remove('navdown')
+                }
+            })
             g.forEach(function(elm){
                 if(elm != el){
                 elm.classList.remove('active')
@@ -218,6 +238,20 @@
         })
     })
 </script>
-
+<script>
+//SVG g标签关联a标签
+var alla = document.querySelectorAll('a')
+    alla.forEach(function(al){
+        al.addEventListener('click',function(){
+            this.classList.add('navdown')
+            var n = this.getAttribute("name")
+            console.log(n)
+            var gg = document.querySelectorAll('g')
+            console.log(gg)
+            g1 = gg.getElementById("ddd")
+            console.log(g1)
+        })
+    })
+</script>
 </body>
 </html>
