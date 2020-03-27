@@ -14,10 +14,8 @@ from . import views
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='male.html')),
-    path('test', TemplateView.as_view(template_name='test.html')),
-    path('getdata1/', views.getData2_1),
-    path('getdata/', views.getData2),
-    # path('api/v1/post/', views.split_home_post_api),
+    path('male', views.showMale),
+    path('female', views.showFemale),
+    path('api/v1/', views.getData),
 ]
 

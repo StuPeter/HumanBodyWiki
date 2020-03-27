@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>人体图解</title>
+
+    <script type="text/javascript" src="/static/MaleBodyApp/zoom.js"></script>
+    <script type="text/javascript" src="/static/MaleBodyApp/drag.js"></script>
+    <script type="text/javascript" src="/static/MaleBodyApp/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/MaleBodyApp/assets/sbb-1.6.2-pre.css"/>
+    <script type="text/javascript" src="/static/MaleBodyApp/jquery-latest.js"></script>
+    <style>
+        svg{
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-user-modify: read-write-plaintext-only;
+            box-shadow: none;
+        }
+        g:hover path{
+	        fill:#f6e1b6;
+        }
+        g.active path{
+	        fill:#fe9b71;
+        }
+        a {
+            text-decoration:none;
+            color: -webkit-link;
+        }
+        a:hover {
+            padding: 4px 6px 5px;
+            color: #000;
+            text-shadow: 0 1px 0 rgba(255,255,255,.2);
+            border-color: #e5855c;
+            background-color: #fff;
+        }
+         .navdown {
+            color: #fff !important;
+            padding: 4px 6px 5px;
+            text-shadow: 0 -1px 0 rgba(0,0,0,.1);
+            border: none;
+            border: 1px solid #F00;
+            background-color: #ff8a59 !important;
+            background-image: linear-gradient(#ff8a59,#f27b49);
+            text-decoration:none;
+        }
+
+
+    </style>
+</head>
+<body style="height: 100%;margin: 0;overflow: hidden;">
+<!--标题栏-->
+<header id="topbar" class="ng-scope">
+    <nav id="nav">
+        <ul>
+            <li>
+                <a href="." alt="Home" class="icon icon-home noText enabled">Home</a>
+            </li>
+            <li class="drop ng-isolate-scope closed" sbb-bookmarks="" set-location="setLocation(url)"
+                name="human adult male body">
+                <div alt="Bookmarks" class="icon icon-book noText enabled" ng-class="{'enabled': enabled }"
+                     ng-click="toggle()">
+                </div>
+                <div class="container">
+                    <div class="subContainer">
+                        <div class="triangle"></div>
+                        <div class="content">
+                            <button ng-click="addBookmark()" ng-class="{ 'disabled': disabled }" ng-disabled="disabled"
+                                    ng-hide="displayOnly" class="ng-binding">Add Bookmark
+                            </button>
+                            <div class="separator ng-hide" ng-show="bookmarks.length &amp;&amp; !displayOnly"></div>
+                            <ul>
+                                <!-- ngRepeat: bookmark in bookmarks track by $index -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="drop ng-isolate-scope" ng-class="{ 'opened': active }">
+                <div class="icon icon-question noText enabled" alt="Help" ng-click="toggle()">
+                </div>
+            </li>
+            <li class="fRight drop center" sbb-gender="">
+                  <span class="icon icon-neutral noText ng-hide" ng-hide="genderEnabled">
+                  </span>
+                <a class="icon icon-male noText enabled" ng-click="changeGender()" ng-show="genderEnabled">
+                </a>
+            </li>
+        </ul>
+        <!-- ngInclude:  -->
+        <!-- ngInclude:  -->
+    </nav>
+    <form id="search" class="ng-pristine ng-valid">
+        <div class="wrapper">
+            <input name="search" id="f_search" type="text" ng-model="searchInput"
+                   class="ng-pristine ng-untouched ng-valid">
+            <label for="f_search" class="icon-magnifier icon-only"></label>
+            <div class="close icon-cross-circle ng-hide" ng-show="searchInput.length" ng-click="searchInput = ''">
+                Close
+            </div>
+            <!-- ngInclude:  -->
+        </div>
+    </form>
+
+    <h1 class="right ng-binding">
+        人体图解
+    </h1>
+    <!-- ngInclude:  -->
+</header>
+<!--侧边栏-->
+<div id="sidebar" sbb-accordion="" class="ng-scope">
+    <section class="entities open">
+        <h3 class="toggler" ng-click="toggle('entities')">Entities</h3>
+        <ul class="controls">
+            <li title="Maximise" class="hidden icon-plus-circle" ng-click="maximise('entities')">Max</li>
+        </ul>
+        <div class="content" style="height: 1163px;">
+            <div id="nav1">
+                <div class="wrapper" id="">
+                    <ul class="">
+                        {% for bodyen, bodycn in bodyParts.items %}
+                        <li>
+                            <a name="{{ bodyen }}" class="unit ng-binding" href="#">{{ bodycn }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<div id="dragDiv"
+     style="height: 100%; width: 100%; overflow: visible; position: absolute; transition: all 0.1s ease 0s; user-select: none; cursor: default; left: -0px; top: -0px;">
+    <svg id="zoomSvg" height="6315" version="1.1" width="2340" xmlns="http://www.w3.org/2000/svg"
+         style="overflow: hidden; position: relative; transform: translate(0px) scale(1) rotate(0deg);" class=""
+         prefix="uberon: http://purl.obolibrary.org/obo/ ro: http://www.obofoundry.org/ro/ro.owl# obo: http://purl.obolibrary.org/obo/ ma: http://purl.org/obo/owl/MA# go: http://purl.org/obo/owl/GO# fma: http://purl.org/obo/owl/FMA# efo: http://www.ebi.ac.uk/efo/ cl: http://purl.org/obo/owl/CL# celda: http://ontology.cellfinder.org/CELDA.owl#"
+         about="fma:FMA_67811" viewBox="-11.903800475059382 0 117 380" preserveAspectRatio="xMinYMin"><title>Human Adult
+        Male Body</title>
+        {% for group in groups %}
+
+        {% if group.resource == "useless" %}
+        {% for element in group.elements %}
+        {% if element.type == "path" %}
+        <path id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+              data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+              d="{{element.d}}">
+        </path>
+        {% elif element.type == "circle" %}
+        <circle id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                cx="{{element.cx}}" cy="{{element.cy}}" r="{{element.r}}"></circle>
+        {% elif element.type == "ellipse" %}
+        <ellipse id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                 data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                 cx="{{element.cx}}" cy="{{element.cy}}" rx="{{element.rx}}" ry="{{element.ry}}"></ellipse>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+
+        <g name="{{group.gid}}" property="ro:has_part" resource="{{ group.resource }}"
+           data-group="{{ group.datagroup }}">
+            {% for element in group.elements %}
+            {% if element.type == "path" %}
+            <path id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                  data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                  d="{{element.d}}">
+            </path>
+            {% elif element.type == "circle" %}
+            <circle id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                    data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                    cx="{{element.cx}}" cy="{{element.cy}}" r="{{element.r}}"></circle>
+            {% elif element.type == "ellipse" %}
+            <ellipse id="{{element.id}}" fill="{{element.fill}}" stroke="{{element.stroke}}"
+                     data-group="{{ element.datagroup }}" stroke-width="{{ element.strokewidth }}"
+                     cx="{{element.cx}}" cy="{{element.cy}}" rx="{{element.rx}}" ry="{{element.ry}}"></ellipse>
+            {% endif %}
+            {% endfor %}
+        </g>
+        {% endif %}
+        {% endfor %}
+    </svg>
+</div>
+
+<script>
+        window.onload = function () {
+            $solway.zoom({
+                ele: document.getElementById('zoomSvg'), // 缩放的 节点
+                scale: 0.11,  // 默认缩放倍数   默认 1
+                minScale: 0.1, // 最小倍数   默认0.1
+                rate: 0.1,  // 缩放速率   默认  ±0.1  (传正数)
+
+                // 偏移量， [x偏移量，  y偏移量]
+                translate: [($('#dragDiv').width() - $('#zoomSvg').width()) / 2, ($('#dragDiv').height() - $('#zoomSvg').height()) / 2]
+            });
+
+
+            $solway.drag({
+                ele: document.getElementById('dragDiv')
+            });
+        };
+
+
+</script>
+
+<script>
+//SVG g标签关联a标签
+var g = document.querySelectorAll('g')
+    g.forEach(function(el){
+        el.addEventListener('click',function(){
+            this.classList.add('active')
+            g.forEach(function(elm){
+                if(elm != el){
+                elm.classList.remove('active')
+                }
+            })
+            //a标签
+            var n = this.getAttribute("name")
+            var a = document.getElementsByName(n)[0]
+            a.classList.add('navdown')
+            var alla = document.querySelectorAll('a')
+            alla.forEach(function(al){
+                if (al != a){
+                al.classList.remove('navdown')
+                }
+            })
+
+        })
+    })
+
+</script>
+<script>
+//SVG a标签关联g标签
+var alla = document.querySelectorAll('a')
+var target
+    alla.forEach(function(al){
+        al.addEventListener('click',function(){
+            this.classList.add('navdown')
+            alla.forEach(function(ala){
+                if(ala != al){
+                    ala.classList.remove("navdown")
+                }
+            })
+            var n = this.getAttribute("name")
+            var gg = document.querySelectorAll('g')
+            gg.forEach(function(g1){
+                gn = g1.getAttribute("name")
+                if (gn == n){
+                    g1.classList.add('active')
+                    target = g1
+                }
+            })
+            gg.forEach(function(g1g){
+                if (g1g != target){
+                    g1g.classList.remove('active')
+                }
+            })
+
+
+        })
+    })
+
+</script>
+</body>
+</html>
