@@ -23,7 +23,7 @@ def getData(request):
 
 def getData2(request):
     """解析json"""
-    with open("MaleBodyApp/static/MaleBodyApp/assets/illustrations/e-human-adult-male-body_cn_2.json") as f:
+    with open("MaleBodyApp/static/MaleBodyApp/assets/illustrations/e-human-adult-female-body_cn_2.json") as f:
         jData = json.load(f)
     bodyPartsDict = {}
     for g in jData["groups"]:
@@ -39,7 +39,7 @@ def getData2(request):
 
 def getData2_1(request):
     """解析json"""
-    with open("MaleBodyApp/static/MaleBodyApp/assets/illustrations/e-human-adult-male-body_cn_2.json") as f:
+    with open("MaleBodyApp/static/MaleBodyApp/assets/illustrations/e-human-adult-female-body_cn_2.json") as f:
         jData = json.load(f)
     bodyPartsDict = {}
     for g in jData["groups"]:

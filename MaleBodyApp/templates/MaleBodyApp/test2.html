@@ -44,9 +44,6 @@
         }
 
 
-
-
-
     </style>
 </head>
 <body style="height: 100%;margin: 0;overflow: hidden;">
@@ -202,26 +199,21 @@
         };
 
 
-
-
 </script>
-<script type="text/javascript">
-        $(function () {
-            $("#nav1 a").click(function () {
-                $("#nav1 a").eq($(this).index()).addClass("navdown").siblings().removeClass("navdown");
-            })
-        })
 
-
-</script>
 <script>
 //SVG g标签关联a标签
 var g = document.querySelectorAll('g')
     g.forEach(function(el){
         el.addEventListener('click',function(){
             this.classList.add('active')
+            g.forEach(function(elm){
+                if(elm != el){
+                elm.classList.remove('active')
+                }
+            })
+            //a标签
             var n = this.getAttribute("name")
-            console.log(n)
             var a = document.getElementsByName(n)[0]
             a.classList.add('navdown')
             var alla = document.querySelectorAll('a')
@@ -230,28 +222,42 @@ var g = document.querySelectorAll('g')
                 al.classList.remove('navdown')
                 }
             })
-            g.forEach(function(elm){
-                if(elm != el){
-                elm.classList.remove('active')
-                }
-            })
+
         })
     })
+
 </script>
 <script>
-//SVG g标签关联a标签
+//SVG a标签关联g标签
 var alla = document.querySelectorAll('a')
+var target
     alla.forEach(function(al){
         al.addEventListener('click',function(){
             this.classList.add('navdown')
+            alla.forEach(function(ala){
+                if(ala != al){
+                    ala.classList.remove("navdown")
+                }
+            })
             var n = this.getAttribute("name")
-            console.log(n)
             var gg = document.querySelectorAll('g')
-            console.log(gg)
-            g1 = gg.getElementById("ddd")
-            console.log(g1)
+            gg.forEach(function(g1){
+                gn = g1.getAttribute("name")
+                if (gn == n){
+                    g1.classList.add('active')
+                    target = g1
+                }
+            })
+            gg.forEach(function(g1g){
+                if (g1g != target){
+                    g1g.classList.remove('active')
+                }
+            })
+
+
         })
     })
+
 </script>
 </body>
 </html>

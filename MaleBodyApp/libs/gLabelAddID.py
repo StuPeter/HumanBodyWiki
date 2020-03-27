@@ -13,7 +13,7 @@ from collections import Counter
 
 
 def addId():
-    with open("../static/MaleBodyApp/assets/illustrations/e-human-adult-male-body_cn.json", 'r',
+    with open("../static/MaleBodyApp/assets/illustrations/e-human-adult-female-body_cn_1.json", 'r',
               encoding="utf-8") as fr:
         bodyData = json.load(fr)
     for g in bodyData['groups']:
@@ -28,7 +28,7 @@ def addId():
         # print(list(c_dict.keys())[0])
         g['gid'] = list(c_dict.keys())[0]
         print(g)
-    with open("../static/MaleBodyApp/assets/illustrations/e-human-adult-male-body_cn_2.json", 'w', encoding="utf-8") as fw:
+    with open("../static/MaleBodyApp/assets/illustrations/e-human-adult-female-body_cn_2.json", 'w', encoding="utf-8") as fw:
         json.dump(bodyData, fw, ensure_ascii="utf-8")
 
 
