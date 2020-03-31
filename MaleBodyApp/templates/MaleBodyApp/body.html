@@ -78,11 +78,11 @@
                 <div class="icon icon-question noText enabled" alt="Help" ng-click="toggle()">
                 </div>
             </li>
-            <li class="fRight drop center" sbb-gender="">
-                  <span class="icon icon-neutral noText ng-hide" ng-hide="genderEnabled">
-                  </span>
-                <a class="icon icon-male noText enabled" ng-click="changeGender()" ng-show="genderEnabled">
-                </a>
+            <li class="fRight drop center">
+                <a class="icon icon-female noText enabled" href="{% url 'MaleBodyApp:Female' %}"></a>
+            </li>
+            <li class="fRight drop center">
+                <a class="icon icon-male noText enabled" href="{% url 'MaleBodyApp:Male' %}"></a>
             </li>
         </ul>
         <!-- ngInclude:  -->
@@ -108,7 +108,7 @@
 <!--侧边栏-->
 <div id="sidebar" sbb-accordion="" class="ng-scope">
     <section class="entities open">
-        <h3 class="toggler" ng-click="toggle('entities')">Entities</h3>
+        <h3 class="toggler" ng-click="toggle('entities')">部位</h3>
         <ul class="controls">
             <li title="Maximise" class="hidden icon-plus-circle" ng-click="maximise('entities')">Max</li>
         </ul>
@@ -133,8 +133,7 @@
     <svg id="zoomSvg" height="6315" version="1.1" width="2340" xmlns="http://www.w3.org/2000/svg"
          style="overflow: hidden; position: relative; transform: translate(0px) scale(1) rotate(0deg);" class=""
          prefix="uberon: http://purl.obolibrary.org/obo/ ro: http://www.obofoundry.org/ro/ro.owl# obo: http://purl.obolibrary.org/obo/ ma: http://purl.org/obo/owl/MA# go: http://purl.org/obo/owl/GO# fma: http://purl.org/obo/owl/FMA# efo: http://www.ebi.ac.uk/efo/ cl: http://purl.org/obo/owl/CL# celda: http://ontology.cellfinder.org/CELDA.owl#"
-         about="fma:FMA_67811" viewBox="-11.903800475059382 0 117 380" preserveAspectRatio="xMinYMin"><title>Human Adult
-        Male Body</title>
+         about="fma:FMA_67811" viewBox="-11.903800475059382 0 117 380" preserveAspectRatio="xMinYMin"><title></title>
         {% for group in groups %}
 
         {% if group.resource == "useless" %}
